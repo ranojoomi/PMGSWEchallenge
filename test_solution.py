@@ -38,32 +38,46 @@ class TestSolution(unittest.TestCase):
         self.assertEqual('email_hash', output[0])
         self.assertEqual('category', output[1])
 
-    # testing 
+    # testing combining csv with same columns
     def test_same_cols(self):
         num_rows = 0
         num_cols = 0
         num_rows_combined = 0
         num_cols_combined = 0
+        all_rows = []
 
         for file in self.files:
+            header = True
             with open(file, 'r') as open_file:
                 csv_reader = csv.reader(open_file)
                 for line in csv_reader:
                     num_rows += 1
                     num_cols = len(line)
+                    if not header:
+                        # adding all non header rows to list
+                        all_rows.append(line)
+                    
+                    header = False 
 
         solution_for_testing.main(self.files, self.out_file)
 
+        header = True
         with open(self.out_file, 'r') as open_test:
             csv_reader = csv.reader(open_test)
-            for line in csv_reader:
+            for i, line in enumerate(csv_reader):
                 num_rows_combined += 1
                 num_cols_combined = len(line)
+                if not header:
+                    line.pop()
+                    # making sure our data that we have written matches with the original csv files
+                    self.assertEqual(all_rows[i-1], line)
+                header = False
 
+        # asserting that column and rows sizes are correct (adjusted numbers to account for headers)
         self.assertEqual(num_rows, num_rows_combined + (len(self.files) - 1))
         self.assertEqual(num_cols, num_cols_combined - 1)
 
-    
+    # test for combining csv files with different columns
     def test_with_diff_columns(self):
         num_rows = 0
         num_rows_combined = 0
@@ -85,6 +99,7 @@ class TestSolution(unittest.TestCase):
                 num_rows_combined += 1
                 num_cols_combined = len(line)
 
+        # asserting that number of rows and columns is equal to the original csv files
         self.assertEqual(num_rows, num_rows_combined + (len(self.files_diff_col) - 1))
         self.assertEqual(len(headers), num_cols_combined - 1)
         
