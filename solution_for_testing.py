@@ -35,8 +35,7 @@ def main(in_files, out_file):
         sys.stderr.write("Make sure csv files are included\n")
         return 1
 
-    # main dataframe that stores combined data
-    df_main = pd.DataFrame()
+    # the chucksize we will buffer into
     size = 1024 * 1024
 
     headers = get_headers(in_files)
