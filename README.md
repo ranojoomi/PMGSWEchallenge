@@ -1,46 +1,21 @@
 # CSV Combiner
 
-Write a command line program that takes several CSV files as arguments. Each CSV
-file (found in the `fixtures` directory of this repo) will have the same
-columns. Your script should output a new CSV file to `stdout` that contains the
-rows from each of the inputs along with an additional column that has the
-filename from which the row came (only the file's basename, not the entire path).
-Use `filename` as the header for the additional column.
+This repo is my solution for the CSV Combiner take-home technical assessment. The main solution is located in the file `solution.py` which takes in multiple csv files and combines them into the file specified by `stdout`. 
 
-##  Considerations
-* You should use coding best practices. Your code should be re-usable and extensible.
-* Your code should be testable by a CI/CD process. 
-* Unit tests should be included.
+`solution_for_testing.py` is an almost identical file but intead takes in the file names as a list and outputs to the file given in the arguement. This was done to mkae the unit testing easier.
 
-## Example
-This example is provided as one of the ways your code should run. It should also be
-able to handle more than two inputs, inputs with different columns, and very large (> 2GB) 
-files gracefully.
+Finally, `test_solution.py` contains all the unit tests for the solution. The test file can by run by itself to test the program or the `solution.py` can be run directly to test with custom csv files
 
-```
-$ ./csv-combiner.php ./fixtures/accessories.csv ./fixtures/clothing.csv > combined.csv
-```
+##  Assumptions
 
-Given two input files named `clothing.csv` and `accessories.csv`.
+* A couple of assumtpions were made when writing this script. One was that it was assumed that if the user did not input any csv files in the command line, that the program would exit and print a message to `stderr` reminding the user to enter csv files
 
-|email_hash|category|
-|----------|--------|
-|21d56b6a011f91f4163fcb13d416aa4e1a2c7d82115b3fd3d831241fd63|Shirts|
-|21d56b6a011f91f4163fcb13d416aa4e1a2c7d82115b3fd3d831241fd63|Pants|
-|166ca9b3a59edaf774d107533fba2c70ed309516376ce2693e92c777dd971c4b|Cardigans|
+* Another assumption was regarding files that do not exist and other file types except for csv files, in this case it was assumed that these files are considered invalid and the script has been written to simply skip over these files and instead process the next file. All given valid files would be processed and combined as required.
 
-|email_hash|category|
-|----------|--------|
-|176146e4ae48e70df2e628b45dccfd53405c73f951c003fb8c9c09b3207e7aab|Wallets|
-|63d42170fa2d706101ab713de2313ad3f9a05aa0b1c875a56545cfd69f7101fe|Purses|
+* A third assumption was that the given csv file in `stdout` would be either an empty file, or that anything that was already in the file would be overwritten. This makes it so the combined file will only include the given csv files in the command line combined together.
 
-Your script would output
+* A final assumption was one regarding different columns. When combining csv files that do not share columns, it was assumed that when a row is added to the combined csv file that does not contain certain columns, that the entry in the combined csv file for that row will just be empty. So the combined csv file contains all unique columns from all csv files and for rows that do not contain any data, it simply leaves it blank.
 
-|email_hash|category|filename|
-|----------|--------|--------|
-|21d56b6a011f91f4163fcb13d416aa4e1a2c7d82115b3fd3d831241fd63|Shirts|clothing.csv|
-|21d56b6a011f91f4163fcb13d416aa4e1a2c7d82115b3fd3d831241fd63|Pants|clothing.csv|
-|166ca9b3a59edaf774d107533fba2c70ed309516376ce2693e92c777dd971c4b|Cardigans|clothing.csv|
-|176146e4ae48e70df2e628b45dccfd53405c73f951c003fb8c9c09b3207e7aab|Wallets|accessories.csv|
-|63d42170fa2d706101ab713de2313ad3f9a05aa0b1c875a56545cfd69f7101fe|Purses|accessories.csv|
+Thank you for the oppurtunity and I hope you enjoy reviewing my work!
+
 
