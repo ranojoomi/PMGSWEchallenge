@@ -1,7 +1,6 @@
 import sys
 import pandas as pd
 import csv
-import os
 
 def get_headers(arguments):
 
